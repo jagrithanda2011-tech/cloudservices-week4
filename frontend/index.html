@@ -1,71 +1,310 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Cloud Services Week 4</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 40px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+
+        .status {
+            padding: 15px;
+            border: 1px solid #ccc;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Cloud Services Week 4- updated</h1>
+    <h1>Cloud Services Week 4</h1>
 
     <h2>Three-Container Application</h2>
 
     <p>
-        This application consists of an Nginx frontend,
-        a Python backend REST API and a MySQL database.
+        This application consists of an Nginx frontend, a Python backend
+        REST API and a MySQL database. The application is deployed on
+        CSC Rahti using Kubernetes.
     </p>
+
 
     <h2>Application Status</h2>
 
-    <p>Database time: <span id="dbtime">Loading...</span></p>
-    <p>Visits: <span id="visits">Loading...</span></p>
+    <div class="status">
 
-    <button onclick="addVisit()">Add Visit</button>
+        <p>
+            Database time:
+            <span id="dbtime">Loading...</span>
+        </p>
 
-    <p id="error"></p>
+        <p>
+            Visits:
+            <span id="visits">Loading...</span>
+        </p>
+
+        <button onclick="addVisit()">Add Visit</button>
+
+        <p id="error"></p>
+
+    </div>
+
+
+    <h2>1. Frontend → Backend → Database Communication</h2>
+
+    <p>
+        The frontend communicates with the Python backend using REST API
+        requests. Nginx forwards requests beginning with /api to the backend
+        service. The backend then communicates with the MySQL database.
+        The database time and visit counter displayed above demonstrate
+        communication between the frontend, backend and database.
+    </p>
+
+    <h3>Evidence</h3>
+
+    <img
+        src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28344%29.png"
+        alt="Application communication evidence">
+
+
+    <h2>2. Database Persistence</h2>
+
+    <p>
+        I tested database persistence by increasing the visit counter to 10.
+        I then deleted the MySQL Pod. Kubernetes automatically created a new
+        database Pod. After the new Pod started, the visit counter was still
+        10. This demonstrated that the database data persisted even when the
+        database Pod was recreated.
+    </p>
+
+    <h3>Before deleting the database Pod</h3>
+
+    <img
+        src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28345%29.png"
+        alt="Visit counter before deleting database Pod">
+
+    <h3>Database Pod recreated</h3>
+
+    <img
+        src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28346%29.png"
+        alt="New database Pod">
+
+    <h3>After database Pod recreation</h3>
+
+    <img
+        src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28347%29.png"
+        alt="Visit counter after database Pod recreation">
+
+
+    <h2>3. Pod Recovery Experiment</h2>
+
+    <p>
+        I tested Kubernetes Pod recovery by deleting a running backend Pod.
+        Kubernetes automatically created a replacement Pod because the
+        Deployment required the specified number of replicas to remain
+        running. This demonstrated the self-healing behaviour of Kubernetes.
+    </p>
+
+    <h3>Evidence</h3>
+
+    <img
+        src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28348%29.png"
+        alt="Pod recovery experiment">
+
+
+    <h2>4. Scaling Experiment</h2>
+
+    <p>
+        I scaled the backend deployment from one replica to two replicas.
+        Rahti created another backend Pod, and both backend Pods were running
+        at the same time. This demonstrated how Kubernetes can scale an
+        application by changing the number of replicas.
+    </p>
+
+    <h3>Evidence</h3>
+
+    <img
+        src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28349%29.png"
+        alt="Two backend Pods running">
+
+
+    <h2>5. Application Update</h2>
+
+    <p>
+        I modified the frontend application and pushed the changes to the
+        GitHub repository. A new build was started in Rahti and a new
+        container image was created successfully. Kubernetes then deployed
+        the updated version of the application.
+    </p>
+
+    <p>
+        During the rollout, the new Pod replaced the previous application
+        version while the Deployment continued managing the application.
+    </p>
+
+    <h3>Application modification</h3>
+
+    <img
+        src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28350%29.png"
+        alt="Application update in VS Code">
+
+    <h3>Successful Rahti build</h3>
+
+    <img
+        src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28351%29.png"
+        alt="Successful application build">
+
+
+    <h2>6. Problems Encountered and Solutions</h2>
+
+    <p>
+        One of the main problems was communication between the frontend
+        and backend. The frontend initially produced API errors because
+        Nginx was not correctly forwarding API requests to the backend.
+        I corrected the Nginx configuration so that requests to /api were
+        forwarded to the backend service on port 8000.
+    </p>
+
+    <p>
+        I also encountered a browser caching problem. The updated application
+        worked in Incognito mode but the normal browser continued showing an
+        older version. Refreshing the browser and clearing the cached version
+        solved this problem.
+    </p>
+
+
+    <h2>7. Rahti Compared with Docker Compose and cPouta</h2>
+
+    <p>
+        In the previous cPouta deployment, Docker Compose was used to start
+        and manage the containers on a virtual machine. Networking and
+        container configuration were mainly defined in the Docker Compose
+        configuration.
+    </p>
+
+    <p>
+        In Rahti, the application is managed using Kubernetes resources such
+        as Deployments, Services, Pods and Routes. Kubernetes also provides
+        features such as automatic Pod recovery, scaling and rolling updates.
+        This makes application management more automated compared with
+        manually managing the containers on a cPouta virtual machine.
+    </p>
+
+
+    <h2>8. Git Repository</h2>
+
+    <p>
+        The application source code and Kubernetes deployment configuration
+        are stored in my GitHub repository.
+    </p>
+
+    <p>
+        <a href="https://github.com/jagrithanda2011-tech/cloudservices-week4"
+           target="_blank">
+            Open Cloud Services Week 4 GitHub Repository
+        </a>
+    </p>
+
 
     <script>
+
         function loadStatus() {
+
             fetch('/api/status')
+
                 .then(response => {
+
                     if (!response.ok) {
                         throw new Error('HTTP ' + response.status);
                     }
+
                     return response.json();
+
                 })
+
                 .then(data => {
+
                     document.getElementById('dbtime').textContent =
                         data.database_time;
 
                     document.getElementById('visits').textContent =
                         data.visits;
+
+                    document.getElementById('error').textContent = '';
+
                 })
+
                 .catch(error => {
+
                     document.getElementById('error').textContent =
                         'API error: ' + error;
+
                 });
         }
 
+
         function addVisit() {
+
             fetch('/api/visit')
+
                 .then(response => {
+
                     if (!response.ok) {
                         throw new Error('HTTP ' + response.status);
                     }
+
                     return response.json();
+
                 })
+
                 .then(data => {
+
                     document.getElementById('visits').textContent =
                         data.visits;
+
+                    document.getElementById('error').textContent = '';
+
                 })
+
                 .catch(error => {
+
                     document.getElementById('error').textContent =
                         'API error: ' + error;
+
                 });
         }
 
+
         loadStatus();
+
     </script>
 
 </body>
