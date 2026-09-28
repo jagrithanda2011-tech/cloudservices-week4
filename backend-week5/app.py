@@ -13,8 +13,7 @@ DB_NAME = os.getenv("DB_NAME", "appdb")
 
 # Redis configuration
 REDIS_HOST = os.getenv("REDIS_HOST", "redis")
-REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
-
+REDIS_PORT = int(os.getenv("REDIS_APP_PORT", "6379"))
 
 def get_db_connection():
     return mysql.connector.connect(
