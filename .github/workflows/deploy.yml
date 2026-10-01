@@ -35,10 +35,9 @@ jobs:
           tar -xzf openshift-client-linux.tar.gz
           sudo mv oc /usr/local/bin/oc
           oc version --client
-
       - name: Deploy to Rahti
         run: |
           oc login --token="${{ secrets.RAHTI_TOKEN }}" --server="${{ secrets.RAHTI_SERVER }}"
-          oc project cloudservice-week2
+          oc project cloudservices-week2
           oc set image deployment/backend backend="$IMAGE"
           oc rollout status deployment/backend --timeout=180s
