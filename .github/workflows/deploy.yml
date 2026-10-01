@@ -1,0 +1,44 @@
+name: Build and Deploy Backend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set image name
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}/backend:${{ github.sha }}" >> $GITHUB_ENV
+
+      - name: Build backend image
+        run: docker build -t "$IMAGE" ./backend-week5
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Push backend image
+        run: docker push "$IMAGE"
+
+      - name: Install OpenShift CLI
+        run: |
+          curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
+          tar -xzf openshift-client-linux.tar.gz
+          sudo mv oc /usr/local/bin/oc
+          oc version --client
+
+      - name: Deploy to Rahti
+        run: |
+          oc login --token="${{ secrets.RAHTI_TOKEN }}" --server="${{ secrets.RAHTI_SERVER }}"
+          oc project cloudservice-week2
+          oc set image deployment/backend backend="$IMAGE"
+          oc rollout status deployment/backend --timeout=180s

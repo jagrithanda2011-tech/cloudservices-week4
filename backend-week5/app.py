@@ -1,9 +1,17 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import os
+import time
+import logging
 import mysql.connector
 import redis
 
 app = Flask(__name__)
+
+# Logging configuration
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s"
+)
 
 # MySQL configuration
 DB_HOST = os.getenv("DB_HOST", "db")
@@ -14,6 +22,7 @@ DB_NAME = os.getenv("DB_NAME", "appdb")
 # Redis configuration
 REDIS_HOST = os.getenv("REDIS_HOST", "redis")
 REDIS_PORT = int(os.getenv("REDIS_APP_PORT", "6379"))
+
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -52,6 +61,73 @@ def ensure_table():
     cur.close()
     conn.close()
 
+
+# --------------------------------------------------
+# Week 6 - Structured request logging
+# --------------------------------------------------
+
+@app.before_request
+def start_timer():
+    request.start_time = time.time()
+
+
+@app.after_request
+def log_request(response):
+    duration = round((time.time() - request.start_time) * 1000, 2)
+
+    app.logger.info(
+        "method=%s path=%s status=%s duration_ms=%s",
+        request.method,
+        request.path,
+        response.status_code,
+        duration
+    )
+
+    return response
+
+
+# --------------------------------------------------
+# Week 6 - Health checks
+# --------------------------------------------------
+
+@app.get("/healthz")
+def healthz():
+    """Liveness check: confirms the Flask application is alive."""
+    return jsonify(
+        status="alive"
+    ), 200
+
+
+@app.get("/readyz")
+def readyz():
+    """Readiness check: confirms the database is reachable."""
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        cur.execute("SELECT 1")
+        cur.fetchone()
+
+        cur.close()
+        conn.close()
+
+        return jsonify(
+            status="ready",
+            database="connected"
+        ), 200
+
+    except Exception as e:
+        app.logger.error("Database readiness check failed: %s", str(e))
+
+        return jsonify(
+            status="not ready",
+            database="disconnected"
+        ), 503
+
+
+# --------------------------------------------------
+# Existing API routes
+# --------------------------------------------------
 
 @app.get("/api/health")
 def health():
