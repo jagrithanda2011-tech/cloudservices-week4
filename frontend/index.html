@@ -8,689 +8,914 @@
     <title>Cloud Services - Week 5</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
-            line-height: 1.6;
-            color: #222;
-        }
+    * {
+        box-sizing: border-box;
+    }
 
-        h1 {
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
-        }
+    html {
+        scroll-behavior: smooth;
+    }
 
-        h2 {
-            margin-top: 45px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 6px;
-        }
+    body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        line-height: 1.7;
+        color: #1e293b;
+        background:
+            radial-gradient(circle at top right, #dbeafe 0, transparent 28%),
+            #f8fafc;
+    }
 
-        h3 {
+    body > * {
+        max-width: 1150px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    h1, h2, h3, h4 {
+        line-height: 1.3;
+        color: #0f172a;
+    }
+
+    h1 {
+        font-size: 2.4rem;
+        margin-top: 45px;
+    }
+
+    h2 {
+        font-size: 1.65rem;
+        margin-top: 45px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #dbeafe;
+    }
+
+    h3 {
+        margin-top: 25px;
+        color: #1e3a8a;
+    }
+
+    p {
+        margin: 12px 0;
+    }
+
+    body > p,
+    body > h1,
+    body > h2,
+    body > h3,
+    body > h4,
+    body > div {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    code {
+        background: #e2e8f0;
+        color: #be123c;
+        padding: 3px 7px;
+        border-radius: 6px;
+        font-family: Consolas, monospace;
+        font-size: 0.92em;
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+    }
+
+    .part-title {
+        max-width: none;
+        padding: 30px 35px;
+        margin-top: 65px;
+        margin-bottom: 30px;
+        color: white;
+        border: none;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #0f172a, #1d4ed8);
+        box-shadow: 0 15px 35px rgba(15, 23, 42, 0.16);
+    }
+
+    .week-header {
+        max-width: 1100px;
+        margin: 65px auto 35px;
+        padding: 45px 40px;
+        color: white;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #020617, #172554, #2563eb);
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.22);
+    }
+
+    .week-header h1 {
+        color: white;
+        margin: 0 0 10px;
+        font-size: 2.7rem;
+    }
+
+    .week-header p {
+        color: #dbeafe;
+        margin: 5px 0;
+        padding: 0;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 6px 13px;
+        margin-bottom: 15px;
+        border-radius: 999px;
+        background: #dbeafe;
+        color: #1e40af;
+        font-weight: 700;
+        font-size: 0.85rem;
+    }
+
+    .summary-card,
+    .info-card,
+    .result-box {
+        background: white;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        padding: 25px 28px;
+        border-radius: 15px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
+    }
+
+    .summary-card {
+        border-left: 5px solid #2563eb;
+    }
+
+    .result-box {
+        border-left: 5px solid #16a34a;
+        background: #f0fdf4;
+    }
+
+    .architecture {
+        background: white;
+        padding: 25px;
+        margin-top: 25px;
+        margin-bottom: 35px;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
+        text-align: center;
+    }
+
+    .architecture img {
+        max-width: 950px;
+        margin: auto;
+    }
+
+    .evidence-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 30px;
+        margin-top: 25px;
+        margin-bottom: 40px;
+    }
+
+    .evidence {
+        background: white;
+        padding: 22px;
+        border-radius: 18px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .evidence:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(15, 23, 42, 0.13);
+    }
+
+    .evidence h3 {
+        margin-top: 5px;
+    }
+
+    .evidence img {
+        margin: 18px 0;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.12);
+    }
+
+    .evidence-number {
+        display: inline-block;
+        padding: 5px 11px;
+        background: #2563eb;
+        color: white;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    .success {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .warning {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .flow {
+        margin: 25px 0;
+        padding: 22px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: #1e3a8a;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 12px;
+    }
+
+    .learning-list li {
+        margin: 10px 0;
+    }
+
+    .footer {
+        max-width: none;
+        margin-top: 70px;
+        padding: 35px;
+        text-align: center;
+        background: #0f172a;
+        color: #cbd5e1;
+    }
+
+    @media (max-width: 700px) {
+        .week-header {
+            border-radius: 0;
             margin-top: 30px;
         }
 
-        h4 {
-            margin-top: 25px;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ccc;
-            margin-top: 10px;
-            margin-bottom: 15px;
-        }
-
-        code {
-            background-color: #eee;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-
-        .evidence {
-            margin-bottom: 40px;
-        }
-
-        .architecture {
-            text-align: center;
-        }
-
-        .architecture img {
-            max-width: 900px;
+        .week-header h1 {
+            font-size: 2rem;
         }
 
         .part-title {
-            margin-top: 55px;
-            padding-top: 15px;
-            border-top: 3px solid #333;
+            border-radius: 0;
         }
+    }
+    /* ===== FINAL WEEK 6 ALIGNMENT FIX ===== */
+
+/* Standard centered width */
+body > p,
+body > ul,
+body > ol,
+body > h2,
+body > h3,
+body > .flow,
+body > .summary-card,
+body > .info-card,
+body > .evidence,
+body > .result-box {
+    width: 90% !important;
+    max-width: 1100px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Paragraph spacing */
+body > p {
+    margin-top: 12px !important;
+    margin-bottom: 12px !important;
+    line-height: 1.7;
+}
+
+/* Section headings */
+body > h2 {
+    margin-top: 38px !important;
+    margin-bottom: 18px !important;
+}
+
+/* Flow boxes */
+body > .flow {
+    margin-top: 25px !important;
+    margin-bottom: 25px !important;
+    text-align: center;
+}
+
+/* Cards */
+body > .summary-card,
+body > .info-card,
+body > .evidence,
+body > .result-box {
+    margin-top: 25px !important;
+    margin-bottom: 25px !important;
+}
+
+/* Keep large Part A / Part B bars full width */
+body > .part-title {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Evidence screenshots */
+.evidence img {
+    display: block;
+    width: 100%;
+    max-width: 1050px;
+    height: auto;
+    margin: 20px auto;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    body > p,
+    body > ul,
+    body > ol,
+    body > h2,
+    body > h3,
+    body > .flow,
+    body > .summary-card,
+    body > .info-card,
+    body > .evidence,
+    body > .result-box {
+        width: 94% !important;
+    }
+}
+
     </style>
 </head>
 
 
 <body>
 
-    <h1>Cloud Services - Week 5</h1>
+<!-- ========================================================= -->
+<!-- WEEK 6 -->
+<!-- ========================================================= -->
 
+<div class="week-header">
+    <span class="badge">CLOUD SERVICES • WEEK 6</span>
+    <h1>CI/CD, Health Checks and Logging</h1>
     <p><strong>Student:</strong> Jagrit Handa</p>
-
     <p>
-        This page contains my Week 5 Cloud Services documentation.
-        Part A contains answers to four of the theoretical questions.
-        Part B documents my practical extension of the Week 4 application,
-        where I added Redis as a fourth component.
+        This documentation describes my Week 6 work with GitHub Actions,
+        GitHub Container Registry, CSC Rahti/OpenShift, Kubernetes health
+        probes and application logging.
     </p>
+</div>
 
 
-    <!-- ========================================================= -->
-    <!-- PART A -->
-    <!-- ========================================================= -->
+<!-- ========================================================= -->
+<!-- WEEK 6 PART A -->
+<!-- ========================================================= -->
 
-    <h1 class="part-title">Part A - Questions</h1>
+<h1 class="part-title">Week 6 — Part A: CI/CD Pipeline</h1>
 
-
-    <!-- QUESTION 1 -->
-
-    <h2>1. SAML and OAuth</h2>
-
+<div class="summary-card">
+    <h3>Objective</h3>
     <p>
-        SAML (Security Assertion Markup Language) and OAuth are both used in
-        identity and access systems, but they solve different problems.
-        SAML is mainly used for authentication and Single Sign-On (SSO).
-        It allows a user to authenticate with an Identity Provider and then
-        access another application, called the Service Provider, without
-        signing in again.
+        In Part A, I created a CI/CD workflow for the Flask backend of my
+        existing cloud application. The purpose of the workflow is to
+        automatically build the backend container image, push it to GitHub
+        Container Registry and deploy the new image to CSC Rahti.
     </p>
+</div>
+
+
+<h2>1. CI/CD Pipeline Overview</h2>
+
+<p>
+    Continuous Integration and Continuous Deployment automate steps that would
+    otherwise need to be performed manually after changing application code.
+    In my implementation, a push to the GitHub repository starts a GitHub
+    Actions workflow.
+</p>
+
+<p>
+    The workflow checks out the repository, builds the backend container image,
+    logs in to GitHub Container Registry, pushes the image, installs the
+    OpenShift command-line tool and then deploys the new backend image to
+    Rahti.
+</p>
+
+<div class="flow">
+    Git Push → GitHub Actions → Build Container → GHCR → Rahti/OpenShift → Backend Pod
+</div>
+
+
+<h2>2. Container Image and Deployment</h2>
+
+<p>
+    The backend container image is stored in GitHub Container Registry.
+    The Rahti backend Deployment uses this image for the running backend
+    containers.
+</p>
+
+<p>
+    This approach connects source-code changes in GitHub with the application
+    running in Rahti. Instead of manually rebuilding and replacing the
+    container after every change, the workflow performs these deployment
+    operations automatically.
+</p>
+
+
+<h2>3. Authentication and Secrets</h2>
+
+<p>
+    The workflow needs authentication to push the container image and
+    communicate with Rahti. Authentication information should not be written
+    directly into the workflow source code.
+</p>
+
+<p>
+    Sensitive values such as access tokens should be stored as GitHub Actions
+    secrets. This prevents credentials from being exposed in the public
+    repository.
+</p>
+
+
+<h2>4. Troubleshooting the CI/CD Pipeline</h2>
+
+<div class="info-card">
+    <span class="evidence-number warning">Problem encountered</span>
+
+    <h3>Incorrect Rahti Project Name</h3>
 
     <p>
-        For example, a company could use SAML so that employees sign in with
-        their company account and then access several internal applications
-        without entering a separate username and password for every
-        application.
-    </p>
-
-    <p>
-        OAuth, on the other hand, is mainly an authorization framework.
-        It allows an application to receive limited permission to access
-        another service on behalf of a user without receiving the user's
-        password. OAuth commonly uses access tokens for this purpose.
-    </p>
-
-    <p>
-        For example, an application could request permission to access some
-        information from a user's Google account. The user gives permission
-        through Google and the application receives an access token instead
-        of the user's Google password.
-    </p>
-
-    <p>
-        A company would therefore commonly choose SAML when it needs
-        enterprise Single Sign-On between an identity provider and its
-        applications. OAuth is more suitable when an application needs
-        delegated access to another service or API. For authentication
-        based on OAuth technology, OpenID Connect can be used on top of
-        OAuth 2.0.
-    </p>
-
-
-    <!-- QUESTION 2 -->
-
-    <h2>2. Web Application Firewall (WAF)</h2>
-
-    <p>
-        A Web Application Firewall, or WAF, is a security system that
-        monitors and filters HTTP and HTTPS traffic going to a web
-        application. Unlike a traditional network firewall that mainly
-        works with network addresses, ports and protocols, a WAF can
-        inspect web requests at the application layer.
-    </p>
-
-    <p>
-        A WAF can help protect a web application from common attacks such
-        as SQL injection and cross-site scripting (XSS). It can inspect
-        incoming requests and block requests that match suspicious or
-        malicious patterns before they reach the application.
-    </p>
-
-    <p>
-        In the Week 4 architecture, the application flow was:
-    </p>
-
-    <p>
-        <strong>
-            Route → Nginx Frontend → Flask Backend → MySQL Database
-        </strong>
-    </p>
-
-    <p>
-        I would place the WAF in front of the publicly accessible web
-        application, before requests reach the frontend/backend application
-        services. This would allow suspicious HTTP requests to be filtered
-        before they reach the internal application components.
+        During the first CI/CD attempt, the workflow successfully completed
+        the image build and push steps, but the deployment step failed.
     </p>
 
     <p>
-        The database and internal services should not be directly exposed
-        to the Internet. This same idea is relevant to the Redis extension
-        in Part B: Redis should remain an internal service rather than being
-        exposed using a public Route.
-    </p>
-
-
-    <!-- QUESTION 3 -->
-
-    <h2>3. Decentralized Storage vs Centralized Object Storage</h2>
-
-    <p>
-        Centralized object storage services such as CSC Allas or Amazon S3
-        are managed storage systems where users upload objects to storage
-        infrastructure operated by a provider. Applications normally
-        communicate with the provider through an API or other supported
-        interface.
+        The workflow attempted to use the project
+        <code>cloudservice-week2</code>, while the Rahti project available to
+        my account was <code>cloudservices-week2</code>.
     </p>
 
     <p>
-        A decentralized or cooperative storage network works differently.
-        Data can be distributed between multiple participating nodes rather
-        than depending on one central storage provider. Systems such as IPFS
-        can also use content-based addressing, where content can be identified
-        based on its data rather than only by a traditional server location.
+        The error therefore occurred during the <strong>Deploy to Rahti</strong>
+        stage rather than during the container build.
     </p>
 
     <p>
-        One advantage of decentralized storage is that data can be distributed
-        across multiple nodes, which can reduce dependence on a single
-        provider or location. It can also provide redundancy when content is
-        available from multiple nodes.
+        I corrected the project name in the workflow configuration and pushed
+        the change again. After this correction, the GitHub Actions workflow
+        completed successfully.
     </p>
-
-    <p>
-        However, decentralized storage can introduce additional challenges.
-        Availability may depend on whether data is replicated or pinned by
-        participating nodes. Performance can be less predictable, and access
-        control, privacy, deletion and management may be more complicated.
-    </p>
-
-    <p>
-        Centralized object storage is usually easier for an organization to
-        manage because the provider offers a defined service, permissions,
-        APIs and operational tools. In this course I used CSC Allas to store
-        public screenshots for my documentation, which is a practical example
-        of centralized object storage.
-    </p>
+</div>
 
 
-    <!-- QUESTION 4 -->
+<h2>5. Part A Evidence</h2>
 
-    <h2>4. YAML and JSON</h2>
-
-    <p>
-        YAML is a human-readable data serialization format that is commonly
-        used for configuration files. Kubernetes and OpenShift/Rahti commonly
-        use YAML manifests to describe resources such as Deployments,
-        Services, ConfigMaps, Secrets and PersistentVolumeClaims.
-    </p>
-
-    <p>
-        YAML works well for Kubernetes configuration because a large amount
-        of structured configuration can be written in a format that is
-        relatively easy for people to read and edit. Indentation represents
-        structure, so related configuration can be grouped clearly.
-    </p>
-
-    <p>
-        JSON can represent the same type of structured information, but it
-        uses braces, brackets, commas and quotation marks more explicitly.
-        JSON is widely used for APIs and communication between applications,
-        while YAML is often more convenient for configuration files that
-        people need to edit manually.
-    </p>
-
-    <p>
-        One disadvantage of YAML is that indentation is important. Incorrect
-        indentation can change the structure of a document or make a manifest
-        invalid. JSON is usually more verbose, but its syntax makes the
-        structure very explicit.
-    </p>
-
-    <p>
-        In my Rahti work I used YAML-style Kubernetes/OpenShift resource
-        definitions for components such as Deployments, Services and
-        ConfigMaps. This made it possible to describe the desired application
-        configuration in a structured way.
-    </p>
-
-
-    <!-- ========================================================= -->
-    <!-- PART B -->
-    <!-- ========================================================= -->
-
-    <h1 class="part-title">
-        Part B - Hands-On: Redis Cache Extension
-    </h1>
-
-    <p>
-        In Week 4 I deployed a three-container application consisting of an
-        Nginx frontend, Flask/Gunicorn backend and MySQL database in CSC
-        Rahti. For Week 5 I selected
-        <strong>Option 2: Add a Redis Cache</strong>.
-    </p>
-
-    <p>
-        Redis was added as a fourth application component with its own
-        Deployment and Kubernetes Service. The purpose was to extend the
-        existing orchestrated application while keeping the original
-        frontend → backend → database functionality working.
-    </p>
-
-
-    <!-- ========================================================= -->
-    <!-- ARCHITECTURE -->
-    <!-- ========================================================= -->
-
-    <h2>1. Updated Application Architecture</h2>
-
-    <p>
-        The Week 4 architecture was extended by adding Redis. The user
-        accesses the application through the Rahti Route. Nginx serves the
-        frontend and forwards API requests to the Flask/Gunicorn backend.
-    </p>
-
-    <p>
-        The backend communicates with MySQL for persistent application data
-        and Redis for cached data. Kubernetes Services provide internal
-        communication between these components.
-    </p>
-
-    <div class="architecture">
-
-        <img
-            src="https://a3s.fi/swift/v1/cloud-assignment/New.png"
-            alt="Week 5 architecture showing Nginx, Flask, MySQL and Redis">
-
-        <p>
-            <strong>Figure 1:</strong>
-            Updated Week 5 application architecture showing Redis as the
-            fourth component.
-        </p>
-
-    </div>
-
-
-    <!-- ========================================================= -->
-    <!-- REDIS IMPLEMENTATION -->
-    <!-- ========================================================= -->
-
-    <h2>2. Redis Cache Implementation</h2>
-
-    <p>
-        Redis was deployed as a separate component in the Rahti OpenShift
-        environment. It has its own Deployment and Service instead of being
-        installed inside the existing Flask container.
-    </p>
-
-    <p>
-        The Redis component is used as an in-memory cache. The Flask backend
-        can store a value in Redis and retrieve the cached value in later
-        requests.
-    </p>
-
-    <p>
-        This demonstrates the same Deployment and Service pattern that was
-        used for the other components of the application. Redis runs
-        independently while communicating with the backend through the
-        internal cluster network.
-    </p>
-
-
-    <!-- ========================================================= -->
-    <!-- CONFIGURATION -->
-    <!-- ========================================================= -->
-
-    <h2>3. Redis Configuration and Communication</h2>
-
-    <p>
-        Redis has its own Kubernetes Service. The Flask backend communicates
-        with Redis through the internal service name
-        <code>redis</code> on port <code>6379</code>.
-    </p>
-
-    <p>
-        The backend receives the Redis connection information through
-        environment configuration. In my deployment I used
-        <code>REDIS_HOST=redis</code> and
-        <code>REDIS_APP_PORT=6379</code>.
-    </p>
-
-    <p>
-        Using the Kubernetes Service name means that the backend does not
-        need to know the IP address of the Redis pod. Kubernetes service
-        discovery provides a stable service name even if the Redis pod is
-        recreated and receives a different IP address.
-    </p>
-
-    <p>
-        Redis is used internally by the application and is not exposed
-        through a public Route. Sensitive credentials should be stored in
-        Kubernetes Secrets and should never be committed to Git or displayed
-        in screenshots. The existing MySQL application also uses ConfigMaps
-        and Secrets for configuration and credentials.
-    </p>
-
-
-    <!-- ========================================================= -->
-    <!-- EVIDENCE -->
-    <!-- ========================================================= -->
-
-    <h2>4. Deployment and Testing Evidence</h2>
-
+<div class="evidence-grid">
 
     <div class="evidence">
-
-        <h3>Evidence 1 - Original Week 4 Application Still Works</h3>
+        <span class="evidence-number">Evidence A1</span>
+        <h3>Initial CI/CD Workflow Failure</h3>
 
         <img
-            src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28485%29.png"
-            alt="Working frontend application">
+            src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28528%29.png"
+            alt="Initial GitHub Actions CI/CD workflow failure">
 
         <p>
-            This screenshot shows that the original Week 4 application
-            continues to work after adding Redis. The Nginx frontend
-            communicates with the Flask backend, and the backend communicates
-            with MySQL.
+            This screenshot documents the initial GitHub Actions workflow
+            attempt. The failed run was useful for troubleshooting the
+            deployment configuration.
         </p>
-
-        <p>
-            The frontend displays the database connection status, database
-            time and visit counter. This confirms that adding Redis did not
-            break the original Week 4 application flow.
-        </p>
-
     </div>
 
 
     <div class="evidence">
-
-        <h3>Evidence 2 - Redis Running as a Separate Component</h3>
+        <span class="evidence-number">Evidence A2</span>
+        <h3>CI/CD Deployment Error Details</h3>
 
         <img
-            src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28486%29.png"
-            alt="Rahti pods showing Redis and existing application components">
+            src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28532%29.png"
+            alt="GitHub Actions Rahti deployment error">
 
         <p>
-            This screenshot shows the application pods running in Rahti.
-            Redis is running as its own pod alongside the frontend, backend
-            and MySQL database.
+            The workflow log shows that authentication to Rahti succeeded,
+            but the deployment used an incorrect project name. The available
+            project was <code>cloudservices-week2</code>.
         </p>
 
         <p>
-            This demonstrates that Redis was added as a separate orchestrated
-            component instead of only adding Redis-related code to the
-            existing backend container.
+            This evidence shows how the CI/CD problem was identified before
+            correcting the workflow configuration.
         </p>
-
     </div>
 
 
     <div class="evidence">
-
-        <h3>Evidence 3 - Redis Service</h3>
+        <span class="evidence-number success">Evidence A3</span>
+        <h3>Successful GitHub Actions Workflow</h3>
 
         <img
-            src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28487%29.png"
-            alt="Rahti services showing Redis service">
+            src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28537%29.png"
+            alt="Successful GitHub Actions build and deployment workflow">
 
         <p>
-            This screenshot shows the Kubernetes Services used by the
-            application. Redis has its own Service on port
-            <code>6379</code>.
+            After correcting the Rahti project configuration, the new workflow
+            run completed successfully.
         </p>
 
         <p>
-            The Flask backend uses this internal Service to communicate
-            with the Redis pod.
+            The green status confirms that the automated build-and-deploy
+            workflow finished successfully.
         </p>
+    </div>
 
+</div>
+
+
+<!-- ========================================================= -->
+<!-- WEEK 6 PART B -->
+<!-- ========================================================= -->
+
+<h1 class="part-title">Week 6 — Part B: Health Checks and Logging</h1>
+
+<div class="summary-card">
+    <h3>Objective</h3>
+
+    <p>
+        In Part B, I improved the reliability and observability of the backend
+        deployment by configuring Kubernetes readiness and liveness probes and
+        checking the backend application logs.
+    </p>
+
+    <p>
+        These features allow Kubernetes to determine whether the application
+        is ready to receive traffic and whether the container is still
+        functioning correctly.
+    </p>
+</div>
+
+
+<h2>1. Backend Health Endpoints</h2>
+
+<p>
+    The backend provides dedicated health endpoints that can be called by
+    Kubernetes/OpenShift.
+</p>
+
+<div class="info-card">
+    <p>
+        <strong>Liveness endpoint:</strong>
+        <code>/healthz</code>
+    </p>
+
+    <p>
+        <strong>Readiness endpoint:</strong>
+        <code>/readyz</code>
+    </p>
+
+    <p>
+        <strong>Backend port:</strong>
+        <code>8000</code>
+    </p>
+</div>
+
+<p>
+    The liveness endpoint indicates whether the backend application process is
+    alive. The readiness endpoint indicates whether the backend is ready to
+    receive requests.
+</p>
+
+
+<h2>2. Readiness Probe</h2>
+
+<p>
+    The readiness probe performs an HTTP request to
+    <code>/readyz</code> on port <code>8000</code>.
+</p>
+
+<p>
+    My deployment configuration uses an initial delay before the checks begin
+    and then performs the readiness check periodically. If the readiness probe
+    fails, Kubernetes can temporarily stop directing normal service traffic to
+    that pod.
+</p>
+
+
+<h2>3. Liveness Probe</h2>
+
+<p>
+    The liveness probe performs an HTTP request to
+    <code>/healthz</code> on port <code>8000</code>.
+</p>
+
+<p>
+    The liveness probe is useful for detecting a container that is still
+    running at the process level but whose application is no longer responding
+    correctly. Repeated liveness failures can cause Kubernetes to restart the
+    container.
+</p>
+
+
+<h2>4. Health Probe Configuration</h2>
+
+<div class="evidence">
+    <span class="evidence-number">Evidence B1</span>
+
+    <h3>Readiness and Liveness Probes in Deployment YAML</h3>
+
+    <img
+        src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28538%29.png"
+        alt="Rahti backend Deployment YAML showing readiness and liveness probes">
+
+    <p>
+        This screenshot shows the health probes configured in the backend
+        Deployment.
+    </p>
+
+    <p>
+        The readiness probe uses <code>/readyz</code> and the liveness probe
+        uses <code>/healthz</code>. Both communicate with the backend on port
+        <code>8000</code>.
+    </p>
+</div>
+
+
+<h2>5. Rolling Deployment and Pod Readiness</h2>
+
+<p>
+    Updating a Kubernetes Deployment can create a new ReplicaSet and new pods.
+    During the rollout, old and new backend pods can temporarily exist at the
+    same time.
+</p>
+
+<p>
+    A newly created pod may initially show <code>0/1</code> in the Ready
+    column. After the readiness check succeeds, it changes to
+    <code>1/1</code>.
+</p>
+
+<div class="evidence-grid">
+
+    <div class="evidence">
+        <span class="evidence-number">Evidence B2</span>
+        <h3>Backend Deployment Before Health-Probe Rollout</h3>
+
+        <img
+            src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28533%29.png"
+            alt="Backend deployment information in Rahti">
+
+        <p>
+            This screenshot shows the backend Deployment and container image
+            information in Rahti before completing the health-probe rollout.
+        </p>
     </div>
 
 
     <div class="evidence">
-
-        <h3>Evidence 4 - Redis Integration Test</h3>
+        <span class="evidence-number">Evidence B3</span>
+        <h3>Backend Pods During Deployment</h3>
 
         <img
-            src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28474%29.png"
-            alt="Backend terminal showing successful Redis connection">
+            src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28534%29.png"
+            alt="Backend pods during rolling deployment">
 
         <p>
-            I tested the Redis connection directly from the backend.
-            The Redis ping returned <code>True</code>, confirming that the
-            Flask backend could successfully reach the Redis Service.
+            During the rollout, backend pods are running while Kubernetes
+            updates the Deployment.
         </p>
 
         <p>
-            I also tested the cache API. The first request stored a value in
-            Redis, and a later request retrieved the value from the Redis
-            cache. This demonstrates that Redis is not only running but is
-            actually being used by the Flask backend.
+            This demonstrates how the application can be updated through a
+            Deployment rather than manually replacing a running container.
         </p>
-
     </div>
 
 
-    <!-- ========================================================= -->
-    <!-- PRODUCTION -->
-    <!-- ========================================================= -->
+    <div class="evidence">
+        <span class="evidence-number success">Evidence B4</span>
+        <h3>Readiness Transition</h3>
 
-    <h2>5. Production Readiness, Security and Reliability</h2>
+        <img
+            src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28535%29.png"
+            alt="Backend pod showing readiness transition">
+
+        <p>
+            This screenshot captures the rollout with multiple backend pods.
+            The newly created pod initially shows <code>0/1</code> readiness
+            while the existing pods remain ready.
+        </p>
+
+        <p>
+            This is evidence that Kubernetes is checking pod readiness before
+            considering the new backend pod ready for normal traffic.
+        </p>
+    </div>
+
+</div>
+
+
+<h2>6. Application Logging</h2>
+
+<p>
+    Logging provides information about requests received by the backend and is
+    important when troubleshooting an application running inside containers.
+</p>
+
+<p>
+    I inspected the backend pod logs in Rahti. The logs show HTTP requests made
+    automatically to the health endpoints.
+</p>
+
+<div class="evidence">
+    <span class="evidence-number">Evidence B5</span>
+
+    <h3>Backend Health-Check Logs</h3>
+
+    <img
+        src="https://a3s.fi/swift/v1/cloud-assignment/Screenshot%20%28536%29.png"
+        alt="Backend logs showing health and readiness requests">
 
     <p>
-        If this application were used in production, cache invalidation would
-        be an important reliability concern. Information stored in Redis can
-        become outdated when the original data changes.
+        The backend logs show repeated requests to
+        <code>/healthz</code> and <code>/readyz</code> returning HTTP
+        <code>200</code>.
     </p>
 
     <p>
-        To reduce this problem, cached values should have an appropriate
-        expiration time, also known as a TTL. The application should also
-        remove or update cached values when the original information changes.
-        This helps prevent users from receiving stale information from the
-        cache.
+        These requests are generated by the Kubernetes/OpenShift health probes.
+        The successful HTTP responses demonstrate that the backend health
+        endpoints are responding correctly.
+    </p>
+</div>
+
+
+<h2>7. Why Health Checks Matter</h2>
+
+<div class="info-card">
+
+    <h3>Readiness</h3>
+    <p>
+        A running container is not necessarily ready to serve users.
+        A readiness probe allows Kubernetes to determine whether the application
+        should currently receive service traffic.
+    </p>
+
+    <h3>Liveness</h3>
+    <p>
+        A process can continue running even when the application has stopped
+        behaving correctly. A liveness probe provides a mechanism for detecting
+        this situation.
+    </p>
+
+    <h3>Logging</h3>
+    <p>
+        Logs make application behaviour visible and provide useful information
+        when diagnosing failures, HTTP errors and health-check problems.
+    </p>
+
+</div>
+
+
+<h2>8. Week 6 Problems Encountered and Solutions</h2>
+
+<div class="info-card">
+
+    <h3>Problem 1 — Incorrect OpenShift Project Name</h3>
+
+    <p>
+        The first GitHub Actions deployment failed because the workflow tried
+        to select <code>cloudservice-week2</code>.
     </p>
 
     <p>
-        Redis should remain an internal service and should not be exposed
-        directly to the public Internet through a Route. If authentication
-        information or passwords are required, they should be stored in
-        Kubernetes Secrets rather than written directly into source code
-        or committed to Git.
+        My actual Rahti project was
+        <code>cloudservices-week2</code>.
+        I corrected the project name and pushed the updated configuration.
+        The next workflow completed successfully.
+    </p>
+
+
+    <h3>Problem 2 — Verifying the Health Probes</h3>
+
+    <p>
+        Simply adding health-probe configuration to YAML does not prove that
+        the probes are functioning.
     </p>
 
     <p>
-        In a production environment I would also use health checks,
-        monitoring and suitable CPU and memory resource limits. The backend
-        should handle a temporary Redis failure safely instead of allowing
-        a cache failure to make the whole application unavailable.
+        I therefore checked the pod readiness state and backend logs.
+        The logs showed repeated successful HTTP requests to
+        <code>/healthz</code> and <code>/readyz</code>, which provided runtime
+        evidence that the probes were active.
     </p>
 
-    <h3>Connection to Part A</h3>
+</div>
+
+
+<h2>9. What I Learned</h2>
+
+<div class="info-card">
+
+    <ul class="learning-list">
+        <li>
+            I learned how GitHub Actions can automate building and deploying
+            container images.
+        </li>
+
+        <li>
+            I learned how GitHub Container Registry can be used between the
+            source repository and the Kubernetes/OpenShift deployment.
+        </li>
+
+        <li>
+            I learned that small configuration differences, such as an
+            incorrect OpenShift project name, can cause a deployment pipeline
+            to fail even when the image build succeeds.
+        </li>
+
+        <li>
+            I learned the difference between Kubernetes readiness and
+            liveness probes.
+        </li>
+
+        <li>
+            I learned how pod readiness can be observed during a rolling
+            deployment.
+        </li>
+
+        <li>
+            I learned how application logs can be used to verify automatic
+            health-check requests.
+        </li>
+
+        <li>
+            I gained more experience troubleshooting GitHub Actions,
+            containers and Rahti/OpenShift deployments.
+        </li>
+    </ul>
+
+</div>
+
+
+<h2>10. Week 6 Final Result</h2>
+
+<div class="result-box">
+
+    <span class="evidence-number success">SUCCESS</span>
+
+    <h3>CI/CD + Health Monitoring Completed</h3>
 
     <p>
-        This also connects to my WAF answer in Part A. A WAF would be placed
-        in front of the publicly accessible web application to inspect and
-        filter HTTP/HTTPS traffic. Internal components such as MySQL and Redis
-        should not be directly exposed to the Internet.
-    </p>
-
-    <p>
-        Together, these controls provide different layers of protection.
-        The WAF helps protect the public web application from malicious web
-        requests, while Kubernetes Services, Secrets and internal networking
-        help protect and configure the application's internal components.
-    </p>
-
-
-    <!-- ========================================================= -->
-    <!-- PROBLEMS -->
-    <!-- ========================================================= -->
-
-    <h2>6. Problems Encountered and Solutions</h2>
-
-
-    <h3>Problem 1 - Redis Port Environment Variable</h3>
-
-    <p>
-        When I first connected the Flask backend to Redis, the backend
-        container failed to start correctly. The Redis port environment
-        variable contained a value similar to
-        <code>tcp://...:6379</code>, while the Python application expected
-        only a numeric port.
-    </p>
-
-    <p>
-        I solved this by using a separate environment variable,
-        <code>REDIS_APP_PORT=6379</code>. After this change, the backend
-        started successfully and the Redis ping returned
-        <code>True</code>.
-    </p>
-
-
-    <h3>Problem 2 - Frontend API Request</h3>
-
-    <p>
-        The frontend initially received an HTML error page instead of JSON.
-        This resulted in an error similar to
-        <code>Unexpected token '&lt;'</code>.
-    </p>
-
-    <p>
-        The frontend was requesting <code>/api</code>, while the Nginx proxy
-        configuration handled requests under <code>/api/</code>. I corrected
-        the frontend request to use the proper endpoint
-        <code>/api/status</code>.
-    </p>
-
-    <p>
-        After this change, the frontend successfully displayed the database
-        connection status, database time and visit counter.
-    </p>
-
-
-    <h3>Problem 3 - Build Resource Quota</h3>
-
-    <p>
-        During deployment, one of the builds could not create its build pod
-        because the project's CPU resource quota had been reached.
+        The Week 6 implementation successfully extends my existing cloud
+        application with an automated CI/CD workflow and Kubernetes health
+        monitoring.
     </p>
 
     <p>
-        I checked the build status and existing resources and retried the
-        deployment after resources became available. After resolving the
-        resource issue, the build completed and the application could be
-        deployed successfully.
+        The final deployment process is:
     </p>
 
-
-    <!-- ========================================================= -->
-    <!-- LEARNING -->
-    <!-- ========================================================= -->
-
-    <h2>7. What I Learned</h2>
+    <div class="flow">
+        GitHub Push → GitHub Actions → Container Build → GHCR →
+        Rahti Deployment → Readiness/Liveness Checks → Running Backend
+    </div>
 
     <p>
-        This assignment helped me understand how a new service can be added
-        to an existing containerized application without putting everything
-        inside one container.
+        The backend Deployment contains readiness and liveness probes, and the
+        Rahti logs show successful requests to the health endpoints. The
+        successful GitHub Actions run also demonstrates that the corrected
+        CI/CD pipeline can build and deploy the backend.
     </p>
 
-    <p>
-        I learned how the Flask backend can communicate with Redis through
-        a Kubernetes Service and how Kubernetes service discovery avoids
-        depending on changing pod IP addresses.
-    </p>
+</div>
 
+
+<!-- ========================================================= -->
+<!-- WEEK 6 REFERENCES -->
+<!-- ========================================================= -->
+
+<h1 class="part-title">Week 6 References</h1>
+
+<div class="info-card">
     <p>
-        I also learned that simply having a Redis pod running is not enough.
-        The application must be able to communicate with it and actually use
-        it for caching. Testing the Redis connection and cache endpoint helped
-        me verify the complete integration.
+        <strong>GitHub Actions Documentation</strong> —
+        CI/CD workflow concepts and workflow configuration.
     </p>
 
     <p>
-        The problems I encountered gave me more experience with environment
-        variables, Nginx proxy configuration, OpenShift resource limits and
-        troubleshooting communication between containers.
-    </p>
-
-
-    <!-- ========================================================= -->
-    <!-- RESULT -->
-    <!-- ========================================================= -->
-
-    <h2>8. Final Result</h2>
-
-    <p>
-        The Week 5 extension was completed successfully. Redis was added as
-        a fourth application component with its own Deployment and Service.
+        <strong>GitHub Container Registry Documentation</strong> —
+        container image storage and authentication.
     </p>
 
     <p>
-        The final application architecture is:
+        <strong>Kubernetes Documentation</strong> —
+        Deployments, readiness probes, liveness probes and container health.
     </p>
 
     <p>
-        <strong>
-            Route → Nginx Frontend → Flask/Gunicorn Backend
-            → MySQL Database + Redis Cache
-        </strong>
+        <strong>CSC Rahti Documentation</strong> —
+        OpenShift application deployment and management.
     </p>
-
-    <p>
-        The original Week 4 frontend, backend and database flow continues to
-        work, while the Flask backend can now communicate with Redis and use
-        it as an in-memory cache.
-    </p>
+</div>
 
 
-    <!-- ========================================================= -->
-    <!-- REFERENCES -->
-    <!-- ========================================================= -->
-
-    <h1 class="part-title">References</h1>
-
-    <p>
-        Kubernetes Documentation -
-        Kubernetes concepts and configuration documentation.
-    </p>
-
-    <p>
-        Redis Documentation -
-        Redis caching and server documentation.
-    </p>
-
-    <p>
-        OAuth 2.0 / OpenID Connect documentation -
-        authorization and identity concepts.
-    </p>
-
-    <p>
-        OWASP -
-        Web application security and Web Application Firewall concepts.
-    </p>
-
-    <p>
-        IPFS Documentation -
-        decentralized and content-addressed storage concepts.
-    </p>
-
-    <p>
-        CSC Documentation -
-        Rahti and Allas cloud services documentation.
-    </p>
-
+<div class="footer">
+    <strong>Cloud Services Portfolio</strong><br>
+    Week 5 + Week 6 Documentation<br>
+    Jagrit Handa
+</div>
 </body>
 
 </html>
