@@ -1,23 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
   name: backend
+
 spec:
-  replicas: 1
+  replicas: 2
+
   selector:
     matchLabels:
       app: backend
+
   template:
     metadata:
       labels:
         app: backend
+
     spec:
       containers:
         - name: backend
+
+          # The CI/CD pipeline replaces this image with the
+          # newly built GHCR image after every push.
           image: vikke82/lemp-backend:1.0.2
 
           ports:
             - containerPort: 8000
+              protocol: TCP
 
           env:
             - name: DB_HOST
@@ -44,22 +53,54 @@ spec:
                   name: mysql-secret
                   key: DB_PASSWORD
 
+            - name: REDIS_HOST
+              value: redis
+
+            - name: REDIS_PORT
+              value: "6379"
+
           # Week 6 - Liveness probe
           livenessProbe:
             httpGet:
               path: /healthz
               port: 8000
+              scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 15
             timeoutSeconds: 5
             failureThreshold: 3
+            successThreshold: 1
 
           # Week 6 - Readiness probe
           readinessProbe:
             httpGet:
               path: /readyz
               port: 8000
+              scheme: HTTP
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
+            successThreshold: 1
+
+          resources: {}
+
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+
+          imagePullPolicy: IfNotPresent
+
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
